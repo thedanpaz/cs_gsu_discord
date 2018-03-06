@@ -108,3 +108,8 @@ pkg/*
 
 # IntelliJ Idea folder
 .idea
+
+# VirtualEnv directories
+bin
+include
+pip-selfcheck.json

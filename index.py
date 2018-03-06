@@ -1,9 +1,9 @@
 import config as cfg
-import pkg.discord
+import discord
 import asyncio
 import random
 
-client = pkg.discord.Client()
+client = discord.Client()
 
 @client.event
 async def on_ready():
@@ -31,7 +31,7 @@ async def newShadowKeeper():
     ]
 
     # Get an Channel Object
-    channel = pkg.discord.Object(id='416055843470049300') # Sandbox - 416055843470049300 todo - should target general when not in testing mode
+    channel = discord.Object(id='416055843470049300') # Sandbox - 416055843470049300 todo - should target general when not in testing mode
 
     while not client.is_closed:
 
@@ -140,7 +140,7 @@ async def on_message(message):
         gifToUse = random.randint(0, (len(dances) - 1))
 
         # Embed Object
-        em = pkg.discord.Embed(description=dances[gifToUse]['description'].format(memberToMention.mention), colour=0xDEADBF)
+        em = discord.Embed(description=dances[gifToUse]['description'].format(memberToMention.mention), colour=0xDEADBF)
         em.set_author(name=dances[gifToUse]['name'], icon_url=dances[gifToUse]['avatar'])
         em.set_image(url=dances[gifToUse]['url'])
 
