@@ -133,7 +133,7 @@ async def on_message(message):
         for member in message.server.members:
             for role in member.roles:
                 if role.id == "424030254093303808":  # supreme leader of the shadow realm role
-                    await client.send_message(message.channel, "All bow to the Supreme Leader of the Shadow Realm: {}".format(member.name))
+                    await client.send_message(message.channel, "All bow to the Supreme Leader of the Shadow Realm: {}".format(member.mention))
     elif message.content.startswith('!geriatricKeeper'):
         for member in message.server.members:
             for role in member.roles:
