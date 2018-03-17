@@ -13,8 +13,23 @@ async def on_ready():
     print('------')
 
 # Defines a background job to appoint a new shadow keeper
+async def guildChecker():
+    await client.wait_until_ready()
+    while not client.is_closed:
+        print("stuff")
+
+        for server in client.servers:
+            if(server.id == "377968199645396993"): # GSU-CS guild
+                print(server.name)
+
+
+        await asyncio.sleep(10)
+
+
 async def newShadowKeeper():
     await client.wait_until_ready()
+
+    # only if this it he GSU-CS guild 377968199645396993
 
     # List of phrases to "thank" a user for their service
     departingKeeper = [
@@ -26,35 +41,62 @@ async def newShadowKeeper():
     # List of phrases to "welcome" a user to the their new role
     arrivingKeeper = [
         "With great power comes great responsibility {}. Best of luck keeping the shadow realm...We are not behind you.",
-        "Wow, {}, I hope you can do a better job than the last guy. Try to keep the shadow realm in check, for all our sake.",
+        "Wow, {}, I hope you can do a better job than the last person. Try to keep the shadow realm in check, for all our sake.",
         "GLHF {}. No turning back now...the shadow realm needs you."
     ]
 
-    # Get an Channel Object
-    channel = discord.Object(id='416055843470049300') # Sandbox - 416055843470049300 todo - should target general when not in testing mode
+    # Get a Channel Object
+    channel = discord.Object(id='377968199645396995') # Sandbox - 416055843470049300
 
     while not client.is_closed:
 
-        # todo - Copy an instance of departingKeeper and arrivingKeeper, that unsets the phrases previously used
-        # todo - will also need to reindex the instances
+        # Determine which departing phrase to use
+        departPhrasePosition = random.randint(0, (len(departingKeeper) - 1))
+
+        # Determine which arraying phrase to use
+        arrivingPhrasePosition = random.randint(0, (len(arrivingKeeper) - 1))
 
         # Set a list of Member Objects
         members = []
 
         for member in client.get_all_members():
 
-            # Check this member's roles
-            for role in member.roles:
-                # Check if this member has the shadow keeper role
-                if role.id == "413888301812940802":  # shadow keeper role
-                    existingKeeper = member
-                    shadowKeeperRole = role # todo - this should be grabbed from iterating over all server roles rather than searching for the role within a member
-                    continue
+            # Check if the member is in guild 377968199645396993 (GS CSU)
+            if member.server.id == "377968199645396993": # Only consider members in guild 377968199645396993 (GS CSU)
 
-            # Ensure that this member is not the BOT
-            if member.id != "413878946598486016":
-                # Append to the list
-                members.append(member)
+                # Check this member's roles
+                for role in member.roles:
+
+                    # Check if this member has the shadow keeper role
+                    if role.id == "413888301812940802":  # shadow keeper role
+                        existingKeeper = member
+                        shadowKeeperRole = role # todo - this should be grabbed from iterating over all server roles rather than searching for the role within a member
+                        continue
+
+                # Ensure that this member is not the BOT
+                if member.id != "413878946598486016":
+
+                    # Boolean used to determine if the member should be appended to the list of members eligible to be shadow keepers
+                    appendMember = True
+
+                    # Iterate again over the roles for a member, checking their eligibility to be Shadow Keepers
+                    for role in member.roles:
+
+                        # appendMember was already set to false, so don't check for any other role attributes
+                        if appendMember == False:
+                            continue
+
+                        if role.id == "415557846810492950": # Current Keeper of the Geriatrics is ineligible
+                            appendMember = False
+                            continue
+
+                        if role.id == "424030254093303808":  # The Supreme Leader of the Shadow Realm is ineligible
+                            appendMember = False
+                            continue
+
+                    # Append to the list
+                    if appendMember:
+                        members.append(member)
 
         # Remove the Existing Keeper from the members list
         members.remove(existingKeeper)
@@ -65,22 +107,18 @@ async def newShadowKeeper():
         # Thank the existing keeper for their service
         await client.remove_roles(existingKeeper, shadowKeeperRole)
 
-        # Determine which departing phrase to use
-        departPhrasePosition = random.randint(0, (len(departingKeeper) - 1))
-
-        await client.send_message(channel, departingKeeper[departPhrasePosition].format(existingKeeper.name)) # todo - replace with a mention when outside of test
+        # send a message to the channel
+        await client.send_message(channel, departingKeeper[departPhrasePosition].format(existingKeeper.mention))
 
         # Set a new keeper
         await client.add_roles(members[newKeeperPosition], shadowKeeperRole)
 
-        # Determine which arraying phrase to use
-        arrivingPhrasePosition = random.randint(0, (len(arrivingKeeper) - 1))
-
         # Send a message to the channel
-        await client.send_message(channel, arrivingKeeper[arrivingPhrasePosition].format(members[newKeeperPosition].name)) # todo - replace with a mention when outside of test
+        await client.send_message(channel, arrivingKeeper[arrivingPhrasePosition].format(members[newKeeperPosition].mention))
 
         # Sleep for 1 day
-        await asyncio.sleep(86400)  # task runs every 1 day
+        # await asyncio.sleep(86400)  # task runs every 1 day
+        await asyncio.sleep((3600 * 12))  # task runs every 12 hours
 
 
 @client.event
@@ -91,6 +129,11 @@ async def on_message(message):
             for role in member.roles:
                 if role.id == "413888301812940802": #shadow keeper role
                     await client.send_message(message.channel, member.mention + " is a " + role.name)
+    elif message.content.startswith('!shadowLeader'):
+        for member in message.server.members:
+            for role in member.roles:
+                if role.id == "424030254093303808":  # supreme leader of the shadow realm role
+                    await client.send_message(message.channel, "All bow to the Supreme Leader of the Shadow Realm: {}".format(member.name))
     elif message.content.startswith('!geriatricKeeper'):
         for member in message.server.members:
             for role in member.roles:
@@ -147,5 +190,6 @@ async def on_message(message):
         # Send the message with the EMBED
         await client.send_message(message.channel, embed=em)
 
-# todo - uncomment when ready for primetime client.loop.create_task(newShadowKeeper())
+# client.loop.create_task(guildChecker())
+client.loop.create_task(newShadowKeeper()) # Run the newShadowKeeper on loop
 client.run(cfg.DISCORD['token'])
