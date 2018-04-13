@@ -46,7 +46,7 @@ async def newShadowKeeper():
     ]
 
     # Get a Channel Object
-    channel = discord.Object(id='377968199645396995') # Sandbox - 416055843470049300
+    channel = discord.Object(id='377968199645396995') # Sandbox - 416055843470049300 # General 377968199645396995
 
     while not client.is_closed:
 
@@ -134,6 +134,20 @@ async def on_message(message):
             for role in member.roles:
                 if role.id == "424030254093303808":  # supreme leader of the shadow realm role
                     await client.send_message(message.channel, "All bow to the Supreme Leader of the Shadow Realm: {}".format(member.mention))
+    elif message.content.startswith('!hothothotties'):
+        for member in message.server.members:
+            for role in member.roles:
+                if role.id == "433322637180272640":  # General Supremo de los Hotties
+                    await client.send_message(message.channel, "I present to you, el General Supremo de los Jalapeño Hotties: {}".format(member.mention))
+    elif message.content.startswith('!tagSomeone'):
+        print(len(message.server.members))
+        taggedUser = random.randint(0, (len(message.server.members) - 1))
+        print(taggedUser)
+        i = 0
+        for member in message.server.members:
+            if(i == taggedUser):
+                await client.send_message(message.channel, "{} is it.".format(member.mention))
+            i += 1
     elif message.content.startswith('!geriatricKeeper'):
         for member in message.server.members:
             for role in member.roles:
@@ -191,5 +205,5 @@ async def on_message(message):
         await client.send_message(message.channel, embed=em)
 
 # client.loop.create_task(guildChecker())
-client.loop.create_task(newShadowKeeper()) # Run the newShadowKeeper on loop
+#client.loop.create_task(newShadowKeeper()) # Run the newShadowKeeper on loop
 client.run(cfg.DISCORD['token'])
