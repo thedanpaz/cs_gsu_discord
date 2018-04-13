@@ -205,5 +205,5 @@ async def on_message(message):
         await client.send_message(message.channel, embed=em)
 
 # client.loop.create_task(guildChecker())
-#client.loop.create_task(newShadowKeeper()) # Run the newShadowKeeper on loop
+client.loop.create_task(newShadowKeeper()) # Run the newShadowKeeper on loop
 client.run(cfg.DISCORD['token'])
