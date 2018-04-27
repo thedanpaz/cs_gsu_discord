@@ -123,7 +123,22 @@ async def newShadowKeeper():
 
 @client.event
 async def on_message(message):
-    if message.content.startswith('!shadowKeeper'):
+    if message.content.startswith('!command'):
+        # Get a Channel Object
+        output = "```"
+        output += "Commands for CS_GSU_BOT\n\n"
+        output += "!shadowKeeper - List the current keeper of the Shadow Realm\n"
+        output += "!shadowLeader - Display the fearless leader of the Shadow Realm\n"
+        output += "!hothothotties - Display the eccentric supreme general of the Jalapeño Hotties\n"
+        output += "!geriatricKeeper - Display the name(s) of the kind soul who has taken the oath of taking care of the elderly server members. Bless their heart\n"
+        output += "!saints - Display the name(s) of the class suck-up(s)\n"
+        output += "!tagSomeone - Randomly tag someone\n"
+        output += "!dance - Randomly tag server member with a dance GIF\n"
+        output += "```"
+
+        await client.send_message(message.channel, output)
+
+    elif message.content.startswith('!shadowKeeper'):
         await client.send_message(message.channel, "OoOoo Shadow Keeper. Fancy.")
         for member in message.server.members:
             for role in member.roles:
@@ -140,13 +155,12 @@ async def on_message(message):
                 if role.id == "433322637180272640":  # General Supremo de los Hotties
                     await client.send_message(message.channel, "I present to you, el General Supremo de los Jalapeño Hotties: {}".format(member.mention))
     elif message.content.startswith('!tagSomeone'):
-        print(len(message.server.members))
         taggedUser = random.randint(0, (len(message.server.members) - 1))
-        print(taggedUser)
         i = 0
         for member in message.server.members:
             if(i == taggedUser):
                 await client.send_message(message.channel, "{} is it.".format(member.mention))
+                break
             i += 1
     elif message.content.startswith('!geriatricKeeper'):
         for member in message.server.members:
