@@ -25,7 +25,6 @@ async def guildChecker():
 
         await asyncio.sleep(10)
 
-
 async def newShadowKeeper():
     await client.wait_until_ready()
 
@@ -86,7 +85,7 @@ async def newShadowKeeper():
                         if appendMember == False:
                             continue
 
-                        if role.id == "415557846810492950": # Current Keeper of the Geriatrics is ineligible
+                        if role.id == "403725126530498571": # Admin's are ineligible
                             appendMember = False
                             continue
 
@@ -119,7 +118,6 @@ async def newShadowKeeper():
         # Sleep for 1 day
         # await asyncio.sleep(86400)  # task runs every 1 day
         await asyncio.sleep((3600 * 12))  # task runs every 12 hours
-
 
 @client.event
 async def on_message(message):
