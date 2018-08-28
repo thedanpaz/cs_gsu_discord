@@ -1,7 +1,9 @@
-import config as cfg
+from dotenv import load_dotenv
 import discord
 import asyncio
 import random
+import os
+load_dotenv()
 
 client = discord.Client()
 
@@ -218,4 +220,4 @@ async def on_message(message):
 
 # client.loop.create_task(guildChecker())
 client.loop.create_task(newShadowKeeper()) # Run the newShadowKeeper on loop
-client.run(cfg.DISCORD['token'])
+client.run(os.getenv("DISCORD_TOKEN"))

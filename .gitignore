@@ -113,3 +113,6 @@ pkg/*
 bin
 include
 pip-selfcheck.json
+
+# Mac
+.DS_Store
