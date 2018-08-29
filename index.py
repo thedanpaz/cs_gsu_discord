@@ -134,6 +134,7 @@ async def on_message(message):
         output += "!saints - Display the name(s) of the class suck-up(s)\n"
         output += "!tagSomeone - Randomly tag someone\n"
         output += "!dance - Randomly tag server member with a dance GIF\n"
+        output += "!coinFlip - Flip a Coin\n"
         output += "```"
 
         await client.send_message(message.channel, output)
@@ -217,6 +218,11 @@ async def on_message(message):
 
         # Send the message with the EMBED
         await client.send_message(message.channel, embed=em)
+    elif message.content.startswith('!coinFlip'):
+        coinFace = "heads" if random.randint(0, 1) == 0 else "tails"
+
+        # Send the message with the EMBED
+        await client.send_message(message.channel, coinFace)
 
 # client.loop.create_task(guildChecker())
 client.loop.create_task(newShadowKeeper()) # Run the newShadowKeeper on loop
