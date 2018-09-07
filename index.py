@@ -118,8 +118,7 @@ async def newShadowKeeper():
         await client.send_message(channel, arrivingKeeper[arrivingPhrasePosition].format(members[newKeeperPosition].mention))
 
         # Sleep for 1 day
-        # await asyncio.sleep(86400)  # task runs every 1 day
-        await asyncio.sleep((3600 * 12))  # task runs every 12 hours
+        await asyncio.sleep(86400)  # task runs every 1 day
 
 @client.event
 async def on_message(message):
