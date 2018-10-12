@@ -134,6 +134,7 @@ async def on_message(message):
         output += "!tagSomeone - Randomly tag someone\n"
         output += "!dance - Randomly tag server member with a dance GIF\n"
         output += "!coinFlip - Flip a Coin\n"
+        output += "!golfClap - Clap, Clap, Clap\n"
         output += "```"
 
         await client.send_message(message.channel, output)
@@ -172,6 +173,34 @@ async def on_message(message):
             for role in member.roles:
                 if role.id == "418620468065730561":  # Patron Saint of Suck Up ub Class
                     await client.send_message(message.channel, "The Mother Teresa of kiss-up's: {}".format(member.mention))
+    elif message.content.startswith('!golfClap'):
+        # A list of dictionaries containing details about GIF's to use
+        claps = [
+            {"name": "",
+             "avatar": "",
+             "url": "https://media.giphy.com/media/XMc1Ui9rAFR1m/giphy.gif",
+             "description": "It\'s not unusual, {}. It\'s just not."},
+            {"name": "James Van Der Beek",
+             "avatar": "",
+             "url": "https://media.giphy.com/media/gRxjhVNfFgqI0/giphy.gif",
+             "description": "{}, well you asked for it."},
+            {"name": "John Stewart",
+             "avatar": "",
+             "url": "https://media.giphy.com/media/WtBDAH97eXAmQ/giphy.gif",
+             "description": "I told you {}, u can\'t touch this"}
+        ]
+
+        # Get a random number that represents an available gif
+        # gifToUse = random.randint(0, (len(claps) - 1))
+        gifToUse = 0
+
+        # Embed Object
+        em = discord.Embed(description="", colour=0xDEADBF)
+        em.set_author(name=claps[gifToUse]['name'], icon_url=claps[gifToUse]['avatar'])
+        em.set_image(url=claps[gifToUse]['url'])
+
+        # Send the message with the EMBED
+        await client.send_message(message.channel, embed=em)
     elif message.content.startswith('!dance'):
         # A list of dictionaries containing details about GIF's to use
         dances = [
