@@ -135,6 +135,7 @@ async def on_message(message):
         output += "!dance - Randomly tag server member with a dance GIF\n"
         output += "!coinFlip - Flip a Coin\n"
         output += "!golfClap - Clap, Clap, Clap\n"
+        output += "!nerves\n"
         output += "```"
 
         await client.send_message(message.channel, output)
@@ -173,6 +174,14 @@ async def on_message(message):
             for role in member.roles:
                 if role.id == "418620468065730561":  # Patron Saint of Suck Up ub Class
                     await client.send_message(message.channel, "The Mother Teresa of kiss-up's: {}".format(member.mention))
+    elif message.content.startswith('!nerves'):
+        # Embed Object
+        em = discord.Embed(description="", colour=0xDEADBF)
+        em.set_author(name="Jordan Peele", icon_url="")
+        em.set_image(url="https://media.giphy.com/media/LRVnPYqM8DLag/giphy.gif")
+
+        # Send the message with the EMBED
+        await client.send_message(message.channel, embed=em)
     elif message.content.startswith('!golfClap'):
         # A list of dictionaries containing details about GIF's to use
         claps = [
@@ -191,8 +200,7 @@ async def on_message(message):
         ]
 
         # Get a random number that represents an available gif
-        # gifToUse = random.randint(0, (len(claps) - 1))
-        gifToUse = 0
+        gifToUse = random.randint(0, (len(claps) - 1))
 
         # Embed Object
         em = discord.Embed(description="", colour=0xDEADBF)
