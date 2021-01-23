@@ -238,7 +238,7 @@ async def newShadowKeeper():
     ]
 
     # Get a Channel Object
-    channel = discord.utils.get(bot.get_all_channels(), guild__name='GSU - CS', name='sandbox')
+    channel = discord.utils.get(bot.get_all_channels(), guild__name='GSU - CS', name='general')
 
     while not bot.is_closed():
 
@@ -314,8 +314,7 @@ async def newShadowKeeper():
         await channel.send(arrivingKeeper[arrivingPhrasePosition].format(members[newKeeperPosition].mention))
 
         # Sleep for 1 day
-        await asyncio.sleep(60)  # task runs every 1 day
-        # await asyncio.sleep(86400)  # task runs every 1 day
+        await asyncio.sleep(86400)  # task runs every 1 day
 
 bot.loop.create_task(newShadowKeeper())
 bot.run(os.getenv("DISCORD_TOKEN"))
